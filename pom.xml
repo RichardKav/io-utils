@@ -12,6 +12,30 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
+    <repositories>
+        <repository>
+            <id>central</id>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <name>Central Repository</name>
+            <url>http://repo.maven.apache.org/maven2</url>
+        </repository>        
+        <repository>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+            <id>clapper-org-maven-repo</id>
+            <name>org.clapper Maven Repo</name>
+            <url>http://maven.clapper.org/</url>
+            <layout>default</layout>
+        </repository>                 
+    </repositories>   
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
