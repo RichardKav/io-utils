@@ -19,7 +19,7 @@
 package eu.ascetic.utils.execution.stream;
 
 /**
- * This allows for a stream gobbler to exchangeable. i.e. allows a choice to be
+ * This allows for a stream gobbler to be exchangeable. i.e. allows a choice to be
  * made such as send to file, screen or to be discarded.
  * 
  * This is based upon the Runtime.exec() tutorial:
