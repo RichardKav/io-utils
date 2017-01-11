@@ -15,7 +15,7 @@
  */
 package eu.ascetic.ioutils.execution;
 
-import eu.ascetic.utils.execution.stream.RedirectGobbler;
+import eu.ascetic.ioutils.execution.stream.RedirectGobbler;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

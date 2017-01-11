@@ -16,7 +16,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package eu.ascetic.utils.execution.stream;
+package eu.ascetic.ioutils.execution.stream;
 
 import java.io.BufferedReader;
 import java.io.File;
