@@ -1,5 +1,8 @@
 /**
- * Copyright 2014 University of Leeds
+ * This code was created as part of the Intelligent Scheduling for Quality of
+ * Service (ISQoS) project (2009-2013) as part of the original author's PhD.
+ * 
+ * Copyright 2013 Richard Kavanagh
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
