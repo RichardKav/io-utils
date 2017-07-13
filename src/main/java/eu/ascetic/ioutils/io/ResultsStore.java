@@ -1,7 +1,7 @@
 /**
  * This code was created as part of the Intelligent Scheduling for Quality of
  * Service (ISQoS) project (2009-2013) as part of the original author's PhD.
- * 
+ *
  * Copyright 2013 Richard Kavanagh
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -196,6 +196,40 @@ public class ResultsStore {
     public String getElement(int row, int column) {
         return results.get(row).get(column);
     }
+
+    /**
+     * This sets the element of a given row and column. Note that it only works
+     * if the item already exists.
+     *
+     * @param row The row of the item to set
+     * @param column The column of the item to set
+     * @param value The value to substitute for the current value
+     */
+    public void setElement(int row, int column, Object value) {
+        if (row < 0 || column < 0) {
+            return;
+        }
+        if ((row < size()) && column < getRowSize(row)) {
+            results.get(row).set(column, value.toString());
+        }
+    }
+    
+    /**
+     * This sets the element of a given row and column. Note that it only works
+     * if the item already exists.
+     *
+     * @param row The row of the item to set
+     * @param column The column of the item to set
+     * @param value The value to substitute for the current value
+     */
+    public void setElement(int row, int column, String value) {
+        if (row < 0 || column < 0) {
+            return;
+        }
+        if ((row < size()) && column < getRowSize(row)) {
+            results.get(row).set(column, value);
+        }
+    }    
 
     /**
      * This shows how many rows are present in the results store.
