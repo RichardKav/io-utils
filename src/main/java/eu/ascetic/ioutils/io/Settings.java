@@ -38,13 +38,10 @@ import java.util.logging.Logger;
  */
 public class Settings {
 
-    /**
-     * This hashtable should be a mapping between the name of a setting and its
-     * value.
-     */
     private Properties settings = new Properties();
     private String description = "Settings";
     private boolean changed = false;
+    private File autoSaveFile = null;
 
     /**
      * The default constructor
@@ -82,14 +79,45 @@ public class Settings {
     }
 
     /**
+     * This constructor automatically loads settings from file.
+     *
+     * @param filename The filename of the location to read the settings in from
+     * disk.
+     */
+    public Settings(String filename, boolean autoSave) {
+        File file = new File(filename);
+        if (file.exists()) {
+            load(file);
+        } else {
+            save(file);
+        }
+        setAutoSave(file, autoSave);
+    }
+
+    /**
+     * This constructor automatically loads settings from file.
+     *
+     * @param file The file to read the settings in from disk.
+     */
+    public Settings(File file, boolean autoSave) {
+        if (file.exists()) {
+            load(file);
+        } else {
+            save(file);
+        }
+        setAutoSave(file, autoSave);
+    }
+
+    /**
      * This adds a setting with a given name to the list of settings.
      *
      * @param name The name of the setting.
      * @param value The value this setting should take.
      */
     public void add(String name, float value) {
-        settings.setProperty(name, new Float(value).toString());
+        getSettings().setProperty(name, new Float(value).toString());
         changed = true;
+        enactAutosave();
     }
 
     /**
@@ -99,8 +127,9 @@ public class Settings {
      * @param value The value this setting should take.
      */
     public void add(String name, double value) {
-        settings.setProperty(name, new Double(value).toString());
+        getSettings().setProperty(name, new Double(value).toString());
         changed = true;
+        enactAutosave();
     }
 
     /**
@@ -110,8 +139,9 @@ public class Settings {
      * @param value The value this setting should take.
      */
     public void add(String name, int value) {
-        settings.setProperty(name, String.valueOf(value));
+        getSettings().setProperty(name, String.valueOf(value));
         changed = true;
+        enactAutosave();
     }
 
     /**
@@ -121,8 +151,9 @@ public class Settings {
      * @param value The value this setting should take.
      */
     public void add(String name, long value) {
-        settings.setProperty(name, String.valueOf(value));
+        getSettings().setProperty(name, String.valueOf(value));
         changed = true;
+        enactAutosave();
     }
 
     /**
@@ -132,8 +163,9 @@ public class Settings {
      * @param value The value this setting should take.
      */
     public void add(String name, boolean value) {
-        settings.setProperty(name, Boolean.toString(value));
+        getSettings().setProperty(name, Boolean.toString(value));
         changed = true;
+        enactAutosave();
     }
 
     /**
@@ -143,8 +175,9 @@ public class Settings {
      * @param value The value this setting should take.
      */
     public void add(String name, String value) {
-        settings.setProperty(name, value);
+        getSettings().setProperty(name, value);
         changed = true;
+        enactAutosave();
     }
 
     /**
@@ -154,8 +187,9 @@ public class Settings {
      * @param value The value this setting should take.
      */
     public void add(String name, Double value) {
-        settings.setProperty(name, value.toString());
+        getSettings().setProperty(name, value.toString());
         changed = true;
+        enactAutosave();
     }
 
     /**
@@ -165,8 +199,9 @@ public class Settings {
      * @param value The value this setting should take.
      */
     public void add(String name, Integer value) {
-        settings.setProperty(name, value.toString());
+        getSettings().setProperty(name, value.toString());
         changed = true;
+        enactAutosave();
     }
 
     /**
@@ -176,8 +211,9 @@ public class Settings {
      * @param value The value this setting should take.
      */
     public void add(String name, Long value) {
-        settings.setProperty(name, value.toString());
+        getSettings().setProperty(name, value.toString());
         changed = true;
+        enactAutosave();
     }
 
     /**
@@ -187,8 +223,9 @@ public class Settings {
      * @param value The value this setting should take.
      */
     public void add(String name, Float value) {
-        settings.setProperty(name, value.toString());
+        getSettings().setProperty(name, value.toString());
         changed = true;
+        enactAutosave();
     }
 
     /**
@@ -198,8 +235,9 @@ public class Settings {
      * @param value The value this setting should take.
      */
     public void add(String name, Boolean value) {
-        settings.setProperty(name, value.toString());
+        getSettings().setProperty(name, value.toString());
         changed = true;
+        enactAutosave();
     }
 
     /**
@@ -209,9 +247,10 @@ public class Settings {
      * @param name The name of the setting to remove from this list of settings.
      */
     public void remove(String name) {
-        Object value = settings.remove(name);
+        Object value = getSettings().remove(name);
         if (value != null) {
             changed = true;
+            enactAutosave();
         }
     }
 
@@ -228,8 +267,8 @@ public class Settings {
      * @return The value of the returned setting.
      */
     public double getDouble(String name) {
-        if (settings.getProperty(name) != null) {
-            return new Double(settings.getProperty(name)).doubleValue();
+        if (getSettings().getProperty(name) != null) {
+            return new Double(getSettings().getProperty(name)).doubleValue();
         }
         return Double.NaN;
     }
@@ -241,7 +280,7 @@ public class Settings {
      * @return The value of the returned setting.
      */
     public int getInt(String name) {
-        return new Integer(settings.getProperty(name)).intValue();
+        return new Integer(getSettings().getProperty(name)).intValue();
     }
 
     /**
@@ -251,7 +290,7 @@ public class Settings {
      * @return The value of the returned setting.
      */
     public long getLong(String name) {
-        return new Long(settings.getProperty(name)).intValue();
+        return new Long(getSettings().getProperty(name)).intValue();
     }
 
     /**
@@ -261,7 +300,7 @@ public class Settings {
      * @return The value of the returned setting.
      */
     public boolean getBoolean(String name) {
-        return Boolean.valueOf(settings.getProperty(name));
+        return Boolean.valueOf(getSettings().getProperty(name));
     }
 
     /**
@@ -271,7 +310,7 @@ public class Settings {
      * @return The value of the returned setting.
      */
     public String getString(String name) {
-        return settings.getProperty(name);
+        return getSettings().getProperty(name);
     }
 
     /**
@@ -281,7 +320,7 @@ public class Settings {
      * @return The value of the returned setting.
      */
     public float getFloat(String name) {
-        return new Float(settings.getProperty(name)).floatValue();
+        return new Float(getSettings().getProperty(name)).floatValue();
     }
 
     /**
@@ -294,11 +333,12 @@ public class Settings {
      * @return The value of the returned setting.
      */
     public double getDouble(String name, double defaultVal) {
-        if (settings.getProperty(name) == null) {
+        if (getSettings().getProperty(name) == null) {
             add(name, defaultVal);
             changed = true;
+            enactAutosave();
         }
-        return new Double(settings.getProperty(name,
+        return new Double(getSettings().getProperty(name,
                 new Double(defaultVal).toString())).doubleValue();
     }
 
@@ -312,11 +352,12 @@ public class Settings {
      * @return The value of the returned setting.
      */
     public int getInt(String name, int defaultVal) {
-        if (settings.getProperty(name) == null) {
+        if (getSettings().getProperty(name) == null) {
             add(name, defaultVal);
             changed = true;
+            enactAutosave();
         }
-        return Integer.valueOf(settings.getProperty(name,
+        return Integer.valueOf(getSettings().getProperty(name,
                 String.valueOf(defaultVal)));
     }
 
@@ -330,11 +371,12 @@ public class Settings {
      * @return The value of the returned setting.
      */
     public long getLong(String name, long defaultVal) {
-        if (settings.getProperty(name) == null) {
+        if (getSettings().getProperty(name) == null) {
             add(name, defaultVal);
             changed = true;
+            enactAutosave();
         }
-        return Long.valueOf(settings.getProperty(name,
+        return Long.valueOf(getSettings().getProperty(name,
                 String.valueOf(defaultVal)));
     }
 
@@ -348,11 +390,12 @@ public class Settings {
      * @return The value of the returned setting.
      */
     public String getString(String name, String defaultVal) {
-        if (settings.getProperty(name) == null) {
+        if (getSettings().getProperty(name) == null) {
             add(name, defaultVal);
             changed = true;
+            enactAutosave();
         }
-        return settings.getProperty(name, defaultVal);
+        return getSettings().getProperty(name, defaultVal);
     }
 
     /**
@@ -365,13 +408,14 @@ public class Settings {
      * @return The value of the returned setting.
      */
     public boolean getBoolean(String name, boolean defaultVal) {
-        if (settings.getProperty(name) == null) {
+        if (getSettings().getProperty(name) == null) {
             add(name, defaultVal);
             changed = true;
+            enactAutosave();
         }
         return Boolean.valueOf(
-                settings.getProperty(name,
-                Boolean.toString(defaultVal))).booleanValue();
+                getSettings().getProperty(name,
+                        Boolean.toString(defaultVal))).booleanValue();
     }
 
     /**
@@ -384,11 +428,12 @@ public class Settings {
      * @return The value of the returned setting.
      */
     public float getFloat(String name, float defaultVal) {
-        if (settings.getProperty(name) == null) {
+        if (getSettings().getProperty(name) == null) {
             add(name, defaultVal);
             changed = true;
+            enactAutosave();
         }
-        return new Float(settings.getProperty(name,
+        return new Float(getSettings().getProperty(name,
                 new Float(defaultVal).toString())).floatValue();
     }
 
@@ -399,7 +444,7 @@ public class Settings {
      */
     public final void save(File file) {
         try (FileOutputStream strm = new FileOutputStream(file); BufferedOutputStream buff = new BufferedOutputStream(strm)) {
-            settings.store(buff, getDescription());
+            getSettings().store(buff, getDescription());
             buff.flush();
             strm.flush();
             changed = false;
@@ -436,7 +481,7 @@ public class Settings {
     public final void load(File file) {
         try (FileInputStream strm = new FileInputStream(file); BufferedInputStream buff = new BufferedInputStream(strm)) {
             if (file.exists()) {
-                settings.load(buff);
+                getSettings().load(buff);
                 buff.close();
                 strm.close();
                 changed = false;
@@ -475,5 +520,43 @@ public class Settings {
      */
     public boolean isChanged() {
         return changed;
+    }
+
+    /**
+     * This hashtable should be a mapping between the name of a setting and its
+     * value.
+     */
+    public Properties getSettings() {
+        return settings;
+    }
+
+    /**
+     * This indicates if a value is changed in the settings file, if it should automatically save to file
+     * @return true if the settings should be persisted to file straight away
+     */
+    public boolean isAutoSave() {
+        return autoSaveFile != null;
+    }
+
+    /**
+     * This sets the property auto-save. If it is true as soon as a setting is changed it will persist to disk
+     * @param autoSave If auto-saving is enabled or not
+     * @param autoSaveFile The file to save the settings to, if null then auto-save = false
+     */
+    public void setAutoSave(File autoSaveFile, boolean autoSave) {
+        if (autoSave) {
+            this.autoSaveFile = autoSaveFile;
+        } else {
+            this.autoSaveFile = null;
+        }
+    }
+
+    /**
+     * This performs the act of saving the file to disk in the event auto-save is enabled
+     */
+    private void enactAutosave() {
+        if (autoSaveFile != null && changed) {
+            save(autoSaveFile);
+        }
     }
 }
