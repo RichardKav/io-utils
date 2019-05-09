@@ -83,6 +83,7 @@ public class Settings {
      *
      * @param filename The filename of the location to read the settings in from
      * disk.
+	 * @param autoSave indicates if on a change the settings should be saved to disk automatically.
      */
     public Settings(String filename, boolean autoSave) {
         File file = new File(filename);
@@ -98,6 +99,7 @@ public class Settings {
      * This constructor automatically loads settings from file.
      *
      * @param file The file to read the settings in from disk.
+     * @param autoSave indicates if on a change the settings should be saved to disk automatically.
      */
     public Settings(File file, boolean autoSave) {
         if (file.exists()) {
